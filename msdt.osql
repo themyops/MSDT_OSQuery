@@ -1,6 +1,6 @@
 -- From https://github.com/securepeacock/sigma/blob/963289fbbc961454979d3b0219ac103a4142e1b4/rules/windows/process_creation/proc_creation_win_msdt_follina.yml
 CREATE TEMPORARY TABLE parent_child AS SELECT child_processes.pid AS child_pid, child_processes.name AS child_name, parent_processes.pid AS parent_pid, parent_processes.name AS parent_name FROM processes child_processes INNER JOIN processes parent_processes ON child_processes.parent=parent_processes.pid;
-SELECT p.pid, p.name, p.path, p.cmdline, p.state, p.cwd, p.uid, p.on_disk, p.total_size, p.is_elevated_token, p.handle_count FROM processes p WHERE (p.name LIKE "msdt.exe" AND p.cmdline LIKE "rowseForFile" AND p.pid IN (SELECT child_pid FROM parent_child WHERE (parent_name LIKE "WINWORD.exe")));
+SELECT p.pid, p.name, p.path, p.cmdline, p.state, p.cwd, p.uid, p.on_disk, p.total_size, p.is_elevated_token, p.handle_count FROM processes p WHERE (p.name LIKE "%msdt.exe%" AND p.cmdline LIKE "%rowseForFile%" AND p.pid IN (SELECT child_pid FROM parent_child WHERE (parent_name LIKE "%WINWORD%")));
 
 -- Quick and dirty, without parents
-SELECT p.pid, p.name, p.path, p.cmdline, p.state, p.cwd, p.uid, p.on_disk, p.total_size, p.is_elevated_token, p.handle_count FROM processes p WHERE (p.name LIKE "msdt.exe" AND p.cmdline LIKE "rowseForFile");
+SELECT p.pid, p.name, p.path, p.cmdline, p.state, p.cwd, p.uid, p.on_disk, p.total_size, p.is_elevated_token, p.handle_count FROM processes p WHERE (p.name LIKE "%msdt.exe%" AND p.cmdline LIKE "%rowseForFile%");
